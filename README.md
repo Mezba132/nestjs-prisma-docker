@@ -79,12 +79,14 @@ $ docker-compose up
 ## Create Products
 
 ```bash
+# multipart/form-data
 
   name
   category
   description - optional
   productCode - optional
   price
+  file - multiple images
 
 ```
 
@@ -93,6 +95,7 @@ $ docker-compose up
 ```bash
 
 # query params
+
   category - optional -- category wise search
   skip - optional -- pagination
   search - optional -- text search
@@ -104,6 +107,7 @@ $ docker-compose up
 ```bash
 
 # Swagger
+
   localhost:3000/api
 
 ```
