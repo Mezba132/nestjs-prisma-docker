@@ -9,6 +9,8 @@ import {
   UseInterceptors,
   UploadedFiles,
   Query,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -17,6 +19,10 @@ import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { extname } from 'path';
 import { diskStorage } from 'multer';
 import { ApiTags } from '@nestjs/swagger';
+import { RolesGuard } from 'src/auth/gurds/roles.guard';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Role } from '@prisma/client';
+import { JwtAuthGuard } from 'src/auth/decorators/jwt-auth.decorator';
 
 @Controller('product')
 @ApiTags('Products')
@@ -37,6 +43,8 @@ export class ProductsController {
     }),
   )
   @Post('create')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.USER, Role.ADMIN)
   async createProduct(
     @UploadedFiles() files: { files?: Express.Multer.File[] },
     @Body() body: CreateProductDto,
@@ -62,4 +70,7 @@ export class ProductsController {
   async deleteProduct(@Param('id') id: number) {
     return await this.productsService.deleteProduct(id);
   }
+}
+function hasRoles(arg0: string) {
+  throw new Error('Function not implemented.');
 }

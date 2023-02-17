@@ -17,6 +17,7 @@ export class ProductsService {
           price,
           productCode: body.productCode,
           category: body.category,
+          createdBy : 1
         },
       });
 

@@ -13,11 +13,10 @@ export class AuthService {
     try {
       const salt = bcrypt.genSaltSync(10);
       body.password = bcrypt.hashSync(body.password, salt);
-
+      body.dob = new Date(body.dob);
       const existUser = await this.prisma.user.findUnique({
         where: { email: body.email },
       });
-
       if (!existUser) {
         const newUser = await this.prisma.user.create({
           data: body,
@@ -36,7 +35,7 @@ export class AuthService {
     } catch (error) {
       return {
         success: false,
-        message: error,
+        message: error.message,
       };
     }
   };
@@ -75,7 +74,7 @@ export class AuthService {
       if (Object.keys(user).length !== 0) {
         const data = {
           id: user.id,
-          Name: user.name,
+          name: user.name,
           email: user.email,
         };
         return {

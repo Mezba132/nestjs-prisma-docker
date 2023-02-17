@@ -12,7 +12,7 @@ import {
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
-import { LocalAuthGuard } from './local-auth.guard';
+import { LocalAuthGuard } from './decorators/local-auth.decorator';
 import { ApiTags } from '@nestjs/swagger';
 
 @Controller('auth')

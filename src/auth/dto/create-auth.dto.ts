@@ -1,28 +1,48 @@
-import { IsEmail, IsNotEmpty, IsNumber, IsOptional, IsPhoneNumber, IsString, Matches } from "class-validator";
+import { Role } from '@prisma/client';
+import {
+  IsDate,
+  IsDateString,
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsPhoneNumber,
+  IsString,
+  Matches,
+} from 'class-validator';
 
 export class CreateAuthDto {
-    @IsNotEmpty()
-    @IsString()
-    @IsEmail()
-    email: string;
-  
-    @IsNotEmpty()
-    @IsString()
-    password: string;
+  @IsNotEmpty()
+  @IsString()
+  @IsEmail()
+  email: string;
 
-    @IsOptional()
-    @IsString()
-    name : string
+  @IsNotEmpty()
+  @IsString()
+  password: string;
 
-    @IsOptional()
-    @IsNumber()
-    age : number
+  @IsOptional()
+  @IsString()
+  name: string;
 
-    @IsOptional()
-    @IsString()
-    @IsPhoneNumber('BD')
-    @Matches(/^(?:\+88|88)?(01[3-9]\d{8})$/, {
-      message: 'phone number is not valid',
-    })
-    phone : string
+  @IsOptional()
+  @IsNumber()
+  age: number;
+
+  @IsOptional()
+  @IsString()
+  role: Role;
+
+  @IsOptional()
+  @IsString()
+  @IsPhoneNumber('BD')
+  @Matches(/^(?:\+88|88)?(01[3-9]\d{8})$/, {
+    message: 'phone number is not valid',
+  })
+  phone: string;
+
+  @IsOptional()
+  @IsDateString()
+  dob: Date;
 }
