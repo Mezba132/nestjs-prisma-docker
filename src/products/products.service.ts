@@ -7,28 +7,29 @@ import { PrismaService } from '../prisma/prisma.service';
 export class ProductsService {
   constructor(private prisma: PrismaService) {}
 
-  createProduct = async (body: CreateProductDto, files: any) => {
+  createProduct = async (body: CreateProductDto, files: any, user: any) => {
     try {
       let price = isNaN(parseInt(body.price)) ? 0 : parseInt(body.price);
-      const product = await this.prisma.product.create({
-        data: {
-          name: body.name,
-          description: body.description,
-          price,
-          productCode: body.productCode,
-          category: body.category,
-          createdBy : 1
-        },
+      const product = await this.prisma.product
+        .create({
+          data: {
+            name: body.name,
+            description: body.description,
+            price,
+            productCode: body.productCode,
+            category: body.category,
+            createdBy: user.id,
+          },
       });
 
       if (product) {
-        let imageInfos = [];
-        for (let file of files.file) {
-          imageInfos.push({
-            prodId: product.id,
-            path: file.path,
-          });
-        }
+          let imageInfos = [];
+          for (let file of files.file) {
+            imageInfos.push({
+              prodId: product.id,
+              path: file.path,
+            });
+          }
 
         await this.prisma.image.createMany({
           data: imageInfos,

@@ -23,6 +23,8 @@ import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { Role } from '@prisma/client';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { User } from 'src/auth/decorators/user.decorator';
+import { Public } from 'src/auth/decorators/public.decorator';
 
 @Controller('product')
 @ApiTags('Products')
@@ -43,15 +45,17 @@ export class ProductsController {
     }),
   )
   @Post('create')
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(RolesGuard)
   @Roles(Role.USER, Role.ADMIN)
   async createProduct(
     @UploadedFiles() files: { files?: Express.Multer.File[] },
     @Body() body: CreateProductDto,
+    @User() user: any,
   ) {
-    return await this.productsService.createProduct(body, files);
+    return await this.productsService.createProduct(body, files, user);
   }
 
+  @Public()
   @Get('all')
   async getAllProduct(
     @Query('category') category: string,
@@ -70,7 +74,4 @@ export class ProductsController {
   async deleteProduct(@Param('id') id: number) {
     return await this.productsService.deleteProduct(id);
   }
-}
-function hasRoles(arg0: string) {
-  throw new Error('Function not implemented.');
 }
